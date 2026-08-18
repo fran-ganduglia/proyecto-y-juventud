@@ -73,16 +73,18 @@
 .media-card__source {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  height: 110px;
-  padding: 16px;
-  background: linear-gradient(135deg, var(--yellow), #fff 76%);
-  color: var(--ink);
-  border-radius: 5px;
-  font-size: 13px;
+  align-items: center;
+  min-height: 54px;
+  padding: 12px 0;
+  border-top: 4px solid var(--yellow);
+  border-bottom: 1px solid rgba(255, 255, 255, .35);
+  color: var(--yellow);
+  font-size: 12px;
   font-weight: 900;
   text-transform: uppercase;
 }
+
+.media-card__source span:last-child { font-size: 20px; }
 
 .facebook-cta {
   display: inline-flex;
