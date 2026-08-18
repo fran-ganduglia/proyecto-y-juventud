@@ -5,8 +5,25 @@ import Logo from './Logo.astro';
   <a class="brand brand--panel" href="#inicio" aria-label="Proyecto y Juventud, inicio">
     <Logo />
   </a>
-  <nav aria-label="Navegación principal">
+  <nav class="desktop-nav" aria-label="Navegación principal">
     <a href="#inicio">Inicio</a><a href="#nosotros">Nosotros</a><a href="#casos">Problemáticas</a><a href="#participa">Participá</a><a href="#contacto">Contacto</a>
   </nav>
   <a class="button button--small" href="#problematica">Contanos tu problemática</a>
+  <a class="mobile-cta" href="#problematica">Reclamo</a>
+  <details class="mobile-menu">
+    <summary><span class="sr-only">Abrir menú</span><span aria-hidden="true">☰</span></summary>
+    <nav aria-label="Navegación móvil">
+      <a href="#inicio">Inicio</a><a href="#nosotros">Nosotros</a><a href="#casos">Problemáticas</a><a href="#participa">Participá</a><a href="#contacto">Contacto</a>
+      <a class="mobile-menu__cta" href="#problematica">Contanos tu problemática</a>
+    </nav>
+  </details>
 </header>
+
+<script>
+  document.querySelectorAll('.mobile-menu a').forEach((link) => {
+    link.addEventListener('click', () => {
+      const menu = link.closest('.mobile-menu');
+      if (menu instanceof HTMLDetailsElement) menu.open = false;
+    });
+  });
+</script>
