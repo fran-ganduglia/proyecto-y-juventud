@@ -1,0 +1,28 @@
+.brand {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.logo-horizontal {
+  display: block;
+  width: 270px;
+  height: auto;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.logo-compacto {
+  display: block;
+  width: min(190px, 45vw);
+  height: auto;
+  margin: 0 0 24px;
+}
+
+footer .logo-horizontal {
+  width: 230px;
+}
+
+@media (max-width: 800px) {
+  .logo-horizontal { width: 190px; }
+  footer .logo-horizontal { width: 210px; }
+}
