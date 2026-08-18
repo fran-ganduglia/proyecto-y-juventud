@@ -1,9 +1,34 @@
-.form-status {
-  margin: 0;
-  padding: 12px 14px;
-  border-left: 4px solid var(--yellow);
-  background: var(--paper);
-  color: var(--ink);
-  font-size: 13px;
-  line-height: 1.4;
+.honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.thanks-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 32px;
+  background: var(--ink);
+}
+
+.thanks-card {
+  width: min(100%, 640px);
+  padding: clamp(36px, 7vw, 72px);
+  background: #fff;
+  border-top: 9px solid var(--yellow);
+}
+
+.thanks-card h1 {
+  margin: 12px 0 22px;
+  font-size: clamp(40px, 7vw, 68px);
+  line-height: .9;
+}
+
+.thanks-card p:not(.section-kicker) {
+  max-width: 500px;
+  margin: 0 0 28px;
+  line-height: 1.5;
 }
