@@ -1,0 +1,62 @@
+.document-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 26px;
+  align-items: start;
+  max-width: 780px;
+  margin-top: 38px;
+  padding: 28px;
+  background: #fff;
+  border-left: 7px solid var(--yellow);
+}
+
+.document-card__icon {
+  display: grid;
+  width: 55px;
+  height: 62px;
+  place-items: center;
+  background: var(--ink);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.document-card h3 {
+  font-size: 28px;
+  line-height: .95;
+}
+
+.document-card p:not(.section-kicker) {
+  max-width: 560px;
+  line-height: 1.45;
+}
+
+.document-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.facebook-cta {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 34px;
+  padding: 14px 17px;
+  border: 1px solid rgba(255, 255, 255, .55);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.facebook-cta:hover { background: #fff; color: var(--ink); }
+.facebook-cta:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+
+@media (max-width: 600px) {
+  .document-card { grid-template-columns: 1fr; gap: 16px; padding: 22px; }
+  .document-card__icon { width: 48px; height: 53px; }
+}
