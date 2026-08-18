@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Logo from '../components/Logo.astro';
 import { cases } from '../data/cases';
 import { mediaItems } from '../data/media';
+import { documents } from '../data/documents';
 ---
 <BaseLayout title="Proyecto y Juventud | Lanús">
   <main>
@@ -31,12 +32,12 @@ import { mediaItems } from '../data/media';
     </section>
 
     <section class="dark-section" id="casos"><div class="container"><div class="section-heading"><div><p class="section-kicker">Trabajo verificable</p><h2>Casos que acompañamos</h2></div><p>Los contenidos publicados se revisan antes de difundirse.</p></div>
-      <div class="card-grid">{cases.map((item) => <article class="case-card"><span class="demo-tag">Demo</span><p class="case-card__location">{item.location}</p><h3>{item.title}</h3><p>{item.summary}</p><div class="case-card__footer"><span class:list={["status", item.status.toLowerCase().replaceAll(' ', '-')]}> {item.status}</span><a href="#documentacion">Ver presentación →</a></div></article>)}</div>
+      <div class="card-grid">{cases.map((item) => <article class="case-card"><span class="case-card__eyebrow">Caso documentado</span><p class="case-card__location">{item.location}</p><h3>{item.title}</h3><p>{item.summary}</p><div class="case-card__footer"><span class:list={["status", item.status.toLowerCase().replaceAll(' ', '-')]}> {item.status}</span><a href="#documentacion">Ver documentación →</a></div></article>)}</div>
     </div></section>
 
-    <section class="documents" id="documentacion"><div class="container"><p class="section-kicker">Transparencia</p><h2>Documentación a la vista</h2><p class="documents__copy">Cada caso podrá vincularse con sus presentaciones y documentos públicos. No se publicarán datos personales sin revisión previa.</p><article class="document-card"><span class="document-card__icon" aria-hidden="true">PDF</span><div><p class="section-kicker">Documento publicado</p><h3>Programa “Cementerio — 365 días”</h3><p>Propuesta técnica sobre la situación del Cementerio de Lanús y posibles líneas de acción.</p><div class="document-card__actions"><a class="button" href="/PROBLEMATICA%20CEMENTERIO%20Y%20PROPUESTAS.pdf" target="_blank" rel="noopener">Ver documento</a><a class="text-link" href="/PROBLEMATICA%20CEMENTERIO%20Y%20PROPUESTAS.pdf" download>Descargar PDF <span>↓</span></a></div></div></article></div></section>
+    <section class="documents" id="documentacion"><div class="container"><p class="section-kicker">Transparencia</p><h2>Documentación a la vista</h2><p class="documents__copy">La documentación y las repercusiones se vinculan al caso correspondiente para que el recorrido sea verificable.</p>{documents.map((document) => <article class="document-card" id={document.caseId}><span class="document-card__icon" aria-hidden="true">PDF</span><div><p class="section-kicker">Vinculado al caso: Cementerio de Lanús</p><h3>{document.title}</h3><p>{document.summary}</p><div class="document-card__actions"><a class="button" href={document.file} target="_blank" rel="noopener">Ver documento</a><a class="text-link" href={document.file} download>Descargar PDF <span>↓</span></a></div></div></article>)}</div></section>
 
-    <section class="media dark-section"><div class="container"><p class="section-kicker">Difusión pública</p><h2>Proyecto y Juventud en los medios</h2><div class="media-grid">{mediaItems.map((item) => <article class="media-card"><div class="media-card__image"><span>▶</span></div><p class="demo-tag">{item.outlet}</p><h3>{item.title}</h3></article>)}</div><a class="facebook-cta" href="https://www.facebook.com/share/1DCw6mrf9e/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">Conocé más proyectos en Facebook <span>↗</span></a></div></section>
+    <section class="media dark-section"><div class="container"><p class="section-kicker">Difusión pública</p><h2>El reclamo, en los medios</h2><div class="media-grid">{mediaItems.map((item) => <article class="media-card"><a href={item.href} target="_blank" rel="noopener noreferrer"><div class="media-card__image"><span>{item.kind}</span></div><p class="demo-tag">{item.outlet}</p><h3>{item.title}</h3><span class="media-card__link">Abrir publicación ↗</span></a></article>)}</div><a class="facebook-cta" href="https://www.facebook.com/share/1DCw6mrf9e/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">Conocé más proyectos en Facebook <span>↗</span></a></div></section>
 
     <section class="volunteer" id="participa"><div class="container volunteer__content"><h2>El cambio empieza<br />cuando nos unimos.</h2><p>Sumate como voluntario y ayudanos a construir un Lanús más justo para todos.</p><a class="button button--dark" href="#contacto">Quiero sumarme</a></div></section>
 

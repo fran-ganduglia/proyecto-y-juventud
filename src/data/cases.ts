@@ -11,27 +11,11 @@ export interface CommunityCase {
 
 export const cases: CommunityCase[] = [
   {
-    id: 'caso-demo-01',
-    title: 'Problemática barrial',
-    location: 'Barrio / localidad a confirmar',
+    id: 'cementerio-lanus',
+    title: 'Estado de abandono del Cementerio de Lanús',
+    location: 'Lanús',
     status: 'Recibido',
-    summary: 'Contenido de demostración. Próximamente se incorporarán casos verificados por la organización.',
-    isDemo: true,
-  },
-  {
-    id: 'caso-demo-02',
-    title: 'Presentación ciudadana',
-    location: 'Barrio / localidad a confirmar',
-    status: 'En seguimiento',
-    summary: 'Contenido de demostración. La información publicada se revisará antes de ser visible.',
-    isDemo: true,
-  },
-  {
-    id: 'caso-demo-03',
-    title: 'Reclamo comunitario',
-    location: 'Barrio / localidad a confirmar',
-    status: 'Presentado',
-    summary: 'Contenido de demostración. Cada caso podrá vincularse a su documentación correspondiente.',
-    isDemo: true,
+    summary: 'Primer reclamo difundido públicamente por la organización sobre la situación del cementerio. El caso reúne una propuesta técnica y repercusiones en medios y redes.',
+    isDemo: false,
   },
 ];
