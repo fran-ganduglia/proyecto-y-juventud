@@ -1,0 +1,9 @@
+.form-status {
+  margin: 0;
+  padding: 12px 14px;
+  border-left: 4px solid var(--yellow);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.4;
+}
