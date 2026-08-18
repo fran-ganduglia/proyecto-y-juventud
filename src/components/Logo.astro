@@ -1,0 +1,9 @@
+---
+interface Props {
+  className?: string;
+  loading?: 'eager' | 'lazy';
+}
+
+const { className = '', loading = 'eager' } = Astro.props;
+---
+<img class:list={['logo-horizontal', className]} src="/logo-horizontal.png" alt="Organización Proyecto y Juventud" loading={loading} />

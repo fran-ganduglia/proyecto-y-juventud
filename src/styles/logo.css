@@ -3,7 +3,7 @@
   flex: 0 0 auto;
 }
 
-.site-header .brand {
+.brand--panel {
   padding: 4px;
   background: #fff;
   border-radius: 2px;
