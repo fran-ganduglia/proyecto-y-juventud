@@ -3,12 +3,17 @@
   flex: 0 0 auto;
 }
 
+.site-header .brand {
+  padding: 4px;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 3px 3px 0 var(--yellow);
+}
+
 .logo-horizontal {
   display: block;
-  width: 270px;
+  width: 205px;
   height: auto;
-  background: #fff;
-  border-radius: 4px;
 }
 
 .logo-compacto {
@@ -23,6 +28,6 @@ footer .logo-horizontal {
 }
 
 @media (max-width: 800px) {
-  .logo-horizontal { width: 190px; }
+  .logo-horizontal { width: 172px; }
   footer .logo-horizontal { width: 210px; }
 }
