@@ -14,7 +14,7 @@ export const cases: CommunityCase[] = [
     id: 'cementerio-lanus',
     title: 'Estado de abandono del Cementerio de Lanús',
     location: 'Lanús',
-    status: 'Recibido',
+    status: 'Presentado',
     summary: 'Primer reclamo difundido públicamente por la organización sobre la situación del cementerio. El caso reúne una propuesta técnica y repercusiones en medios y redes.',
     isDemo: false,
   },
