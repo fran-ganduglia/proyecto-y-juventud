@@ -57,6 +57,33 @@
   margin-top: 20px;
 }
 
+.document-card__actions .button,
+.document-card__actions .text-link {
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+
+.document-card__actions .button:hover {
+  background: #fff;
+  box-shadow: 3px 3px 0 var(--yellow);
+  transform: translateY(-2px);
+}
+
+.document-card__actions .text-link:hover { transform: translateX(3px); }
+
+.media-card__source {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 110px;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--yellow), #fff 76%);
+  color: var(--ink);
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 .facebook-cta {
   display: inline-flex;
   gap: 10px;
@@ -74,7 +101,30 @@
 .facebook-cta:hover { background: #fff; color: var(--ink); }
 .facebook-cta:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
 
+.facebook-feature {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 30px;
+  align-items: center;
+  margin-top: 48px;
+  padding: 22px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.facebook-feature img {
+  display: block;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.facebook-feature h3 { font-size: 29px; line-height: .95; }
+.facebook-feature p:not(.section-kicker) { max-width: 600px; line-height: 1.45; }
+
 @media (max-width: 600px) {
   .document-card { grid-template-columns: 1fr; gap: 16px; padding: 22px; }
   .document-card__icon { width: 48px; height: 53px; }
+  .facebook-feature { grid-template-columns: 1fr; gap: 18px; }
+  .facebook-feature img { width: 110px; height: 110px; }
 }
