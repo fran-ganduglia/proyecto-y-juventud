@@ -7,7 +7,7 @@ location: Lanús
 status: Presentado
 publishedAt: 2026-08-13
 updatedAt: 2026-08-17
-image: /uploads/favicon.png
+image: ""
 documents:
   - title: Programa "Cementerio — 365 días"
     summary: Propuesta técnica sobre la situación del Cementerio de Lanús y posibles
