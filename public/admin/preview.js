@@ -25,12 +25,6 @@
     return typeof value.toJS === 'function' ? value.toJS() : value;
   }
 
-  function object(entry, key) {
-    var value = entry.getIn(['data', key]);
-    if (!value) return {};
-    return typeof value.toJS === 'function' ? value.toJS() : value;
-  }
-
   function date(value) {
     if (!value) return 'Sin fecha';
     var stringValue = String(value);
@@ -177,86 +171,5 @@
     },
   });
 
-  var NewsPreview = createClass({
-    getInitialState: function () { return { device: 'desktop' }; },
-    render: function () {
-      var entry = this.props.entry;
-      var title = data(entry, 'title', 'Título de la novedad');
-      var summary = data(entry, 'summary', 'El resumen de la novedad aparecerá aquí.');
-      var linkedCase = data(entry, 'case', 'Sin seleccionar');
-      var image = asset(this.props, entry.getIn(['data', 'image']));
-
-      return previewFrame(this, h('article', { className: 'preview-site preview-news' },
-        siteHeader(),
-        h('header', { className: 'preview-hero' },
-          h('div', { className: 'preview-container' },
-            h('p', { className: 'preview-kicker' }, 'Novedad · ' + date(entry.getIn(['data', 'date']))),
-            h('h1', {}, title),
-            h('p', { className: 'preview-summary' }, summary)
-          )
-        ),
-        h('div', { className: 'preview-container preview-content' },
-          image && h('img', { className: 'preview-image', src: image, alt: '' }),
-          h('div', { className: 'preview-prose' }, this.props.widgetFor('body')),
-          h('p', { className: 'preview-related-case' }, 'Caso vinculado: ', h('strong', {}, linkedCase))
-        )
-      ));
-    },
-  });
-
-  var HomePreview = createClass({
-    getInitialState: function () { return { device: 'desktop' }; },
-    render: function () {
-      var entry = this.props.entry;
-      var hero = object(entry, 'hero');
-      var process = object(entry, 'process');
-      var featured = object(entry, 'featuredCases');
-      var steps = Array.isArray(process.steps) ? process.steps : [];
-
-      return previewFrame(this, h('article', { className: 'preview-site preview-home' },
-        siteHeader(),
-        h('section', { className: 'preview-home-hero' },
-          h('div', { className: 'preview-container' },
-            h('p', { className: 'preview-kicker preview-kicker--light' }, text(hero.eyebrow, 'Antetítulo')),
-            h('h1', {}, text(hero.title, 'Título principal'), h('br'), h('em', {}, text(hero.highlight, 'destacado.'))),
-            h('p', { className: 'preview-summary preview-summary--light' }, text(hero.description, 'La descripción aparecerá aquí.')),
-            h('div', { className: 'preview-home-actions' },
-              h('span', { className: 'preview-button' }, text(hero.primaryCta, 'Acción principal')),
-              h('span', { className: 'preview-text-link preview-text-link--light' }, text(hero.secondaryCta, 'Acción secundaria') + ' →')
-            )
-          ),
-          h('span', { className: 'preview-home-orbit', 'aria-hidden': 'true' })
-        ),
-        h('section', { className: 'preview-home-process' },
-          h('div', { className: 'preview-container' },
-            h('p', { className: 'preview-kicker' }, text(process.eyebrow, 'Proceso')),
-            h('h2', {}, text(process.title, 'Así trabajamos')),
-            h('div', { className: 'preview-home-steps' }, steps.map(function (step, index) {
-              return h('article', { key: index },
-                h('span', {}, '0' + (index + 1)),
-                h('h3', {}, text(step.title, 'Paso')),
-                h('p', {}, text(step.description, 'Descripción del paso.'))
-              );
-            }))
-          )
-        ),
-        h('section', { className: 'preview-home-featured' },
-          h('div', { className: 'preview-container' },
-            h('p', { className: 'preview-kicker' }, text(featured.eyebrow, 'Casos')),
-            h('h2', {}, text(featured.title, 'Casos destacados')),
-            h('p', { className: 'preview-home-copy' }, text(featured.intro, 'El texto introductorio aparecerá aquí.')),
-            h('div', { className: 'preview-case-placeholder' },
-              h('strong', {}, 'Casos publicados'),
-              h('span', {}, 'Las tarjetas se cargan automáticamente desde la colección Casos.'),
-              h('span', { className: 'preview-button preview-button--dark' }, text(featured.buttonLabel, 'Ver todos los casos'))
-            )
-          )
-        )
-      ));
-    },
-  });
-
   CMS.registerPreviewTemplate('cases', CasePreview);
-  CMS.registerPreviewTemplate('novedades', NewsPreview);
-  CMS.registerPreviewTemplate('home', HomePreview);
 }());

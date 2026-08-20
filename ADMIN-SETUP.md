@@ -12,6 +12,12 @@ El código del CMS está en `public/admin/`. Publicalo como un segundo sitio de 
 
 El panel no admite borradores: cada guardado escribe en `main` y dispara un deploy. Git conserva el historial y permite recuperar contenido. El nombre de archivo se crea con el slug inicial y no se renombra al editar el título, por lo que la URL pública se mantiene estable.
 
+## Novedades automáticas
+
+El panel editorial solo permite administrar **Casos**. Cada caso creado o actualizado genera automáticamente una Novedad vinculada mediante el workflow `Registrar novedades de casos` de GitHub Actions. El texto identifica, cuando corresponde, una fuente de prensa, un documento o un cambio de estado; para otros cambios registra una actualización general. Eliminar un caso no genera una Novedad.
+
+La automatización necesita que el repositorio permita a GitHub Actions escribir contenido (`contents: write`). No edites archivos dentro de `src/content/novedades/` a mano: son el historial generado a partir de los casos.
+
 ## Regla editorial de archivos
 
 Todo lo subido se hace público tras el deploy. No cargar DNI, teléfonos, domicilios, datos de denunciantes, información médica ni material sin autorización.
