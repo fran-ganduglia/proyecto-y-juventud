@@ -17,7 +17,13 @@ const startsWithBytes = (value, bytes) => bytes.every((byte, index) => value[ind
 const validDate = (value) => Boolean(value) && !Number.isNaN(new Date(value).getTime());
 
 async function filesIn(directory) {
-  const entries = await readdir(directory, { withFileTypes: true });
+  let entries;
+  try {
+    entries = await readdir(directory, { withFileTypes: true });
+  } catch (error) {
+    if (error?.code === 'ENOENT') return [];
+    throw error;
+  }
   const files = await Promise.all(entries.map(async (entry) => {
     const target = path.join(directory, entry.name);
     return entry.isDirectory() ? filesIn(target) : [target];
@@ -148,4 +154,4 @@ if (errors.length) {
   console.error(`Validación de contenido fallida:\n- ${errors.join('\n- ')}`);
   process.exit(1);
 }
-console.log(`Contenido validado: ${cases.length} caso(s) y ${newsFiles.length} novedad(es).`);
+console.log(`Contenido validado: ${cases.length} caso(s) y ${news.length} novedad(es).`);
