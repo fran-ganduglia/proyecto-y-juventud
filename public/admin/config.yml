@@ -49,6 +49,7 @@ collections:
           config:
             multiple: false
             max_file_size: 10485760
+      - { label: Cuerpo, name: body, widget: markdown, hint: "Desarrollá la información con párrafos breves. No pegues HTML y usá enlaces que comiencen con https." }
       - label: Documentos
         name: documents
         widget: list
@@ -84,7 +85,6 @@ collections:
           - { label: Medio, name: outlet, widget: string, hint: "Ej.: Data Conurbano." }
           - { label: Tipo, name: kind, widget: select, options: [Nota web, Facebook, Instagram], hint: "Elegí dónde se publicó." }
           - { label: URL https, name: url, widget: string, pattern: ['https://.*', 'Debe comenzar con https://'], hint: "Ej.: https://medio.example/nota" }
-      - { label: Cuerpo, name: body, widget: markdown, hint: "Desarrollá la información del caso. No pegues HTML ni enlaces que no sean https." }
 
   - name: novedades
     label: Novedades
@@ -117,7 +117,7 @@ collections:
           config:
             multiple: false
             max_file_size: 10485760
-      - { label: Cuerpo, name: body, widget: markdown, hint: "Contá el avance con párrafos breves. No pegues HTML ni enlaces que no sean https." }
+      - { label: Cuerpo, name: body, widget: markdown, hint: "Contá el avance con párrafos breves. No pegues HTML y usá enlaces que comiencen con https." }
 
   - name: pages
     label: Páginas
