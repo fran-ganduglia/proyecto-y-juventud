@@ -1,7 +1,8 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
-const httpsUrl = z.string().url().refine((value) => new URL(value).protocol === 'https:', {
+const httpsUrl = z.url().refine((value) => new URL(value).protocol === 'https:', {
   message: 'La URL debe usar https.',
 });
 

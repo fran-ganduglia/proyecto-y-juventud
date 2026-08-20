@@ -10,8 +10,8 @@
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "astro": "^5.7.10",
+    "@astrojs/check": "^0.9.10",
+    "astro": "^7.2.4",
     "typescript": "^5.8.3"
   }
 }
