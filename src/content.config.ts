@@ -19,6 +19,14 @@ const pressLinks = z.array(z.object({
   url: httpsUrl,
 })).default([]);
 
+// Decap CMS conserva los campos de imagen opcionales como una cadena vacía o
+// `null` cuando se elimina un archivo ya publicado. Astro debe tratarlos igual
+// que un campo ausente, sin relajar la validación de rutas que sí existen.
+const optionalImage = (pattern: RegExp) => z.preprocess(
+  (value) => value === '' || value === null ? undefined : value,
+  z.string().regex(pattern, 'La imagen debe estar en /uploads/ con un nombre seguro.').optional(),
+);
+
 const cases = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/cases' }),
   schema: z.object({
@@ -28,7 +36,7 @@ const cases = defineCollection({
     status: z.enum(['Recibido', 'Presentado', 'En seguimiento', 'Respondido', 'Resuelto']),
     publishedAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
-    image: z.string().regex(/^\/uploads\/(?:[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp)|casos\/[a-z0-9]+(?:-[a-z0-9]+)*\/imagenes\/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp))$/, 'La imagen debe estar en /uploads/ con un nombre seguro.').optional(),
+    image: optionalImage(/^\/uploads\/(?:[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp)|casos\/[a-z0-9]+(?:-[a-z0-9]+)*\/imagenes\/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp))$/),
     documents,
     pressLinks,
   }),
@@ -41,7 +49,7 @@ const novedades = defineCollection({
     summary: z.string().min(1),
     date: z.coerce.date(),
     case: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-    image: z.string().regex(/^\/uploads\/(?:[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp)|novedades\/[a-z0-9]+(?:-[a-z0-9]+)*\/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp))$/, 'La imagen debe estar en /uploads/ con un nombre seguro.').optional(),
+    image: optionalImage(/^\/uploads\/(?:[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp)|novedades\/[a-z0-9]+(?:-[a-z0-9]+)*\/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp))$/),
   }),
 });
 
