@@ -67,6 +67,25 @@ function validHttps(value, label) {
   }
 }
 
+function validateHome(data, label) {
+  const requiredText = [
+    ['hero', 'eyebrow'], ['hero', 'title'], ['hero', 'highlight'], ['hero', 'description'], ['hero', 'primaryCta'], ['hero', 'secondaryCta'],
+    ['process', 'eyebrow'], ['process', 'title'],
+    ['featuredCases', 'eyebrow'], ['featuredCases', 'title'], ['featuredCases', 'intro'], ['featuredCases', 'buttonLabel'],
+  ];
+  for (const [section, field] of requiredText) {
+    if (!isText(data?.[section]?.[field])) fail(`${label}.${section}.${field}: falta un texto obligatorio.`);
+  }
+  const steps = data?.process?.steps;
+  if (!Array.isArray(steps) || steps.length !== 3) {
+    fail(`${label}.process.steps: debe contener exactamente tres pasos.`);
+    return;
+  }
+  for (const [index, step] of steps.entries()) {
+    if (!isText(step?.title) || !isText(step?.description)) fail(`${label}.process.steps[${index}]: faltan título o descripción.`);
+  }
+}
+
 async function validateAsset(publicPath, label, expected = undefined) {
   if (typeof publicPath !== 'string' || !publicPath.startsWith('/uploads/')) {
     fail(`${label}: debe referenciar un archivo dentro de /uploads/.`);
@@ -96,8 +115,19 @@ async function validateAsset(publicPath, label, expected = undefined) {
 
 const caseFiles = await filesIn(path.join(contentRoot, 'cases'));
 const newsFiles = await filesIn(path.join(contentRoot, 'novedades'));
+const homeFile = path.join(contentRoot, 'home.md');
 const cases = [];
 const news = [];
+
+try {
+  const { data, body } = await readEntry(homeFile);
+  inspectStrings(data, path.relative(root, homeFile));
+  if (containsUnsafeMarkup(body)) fail(`${path.relative(root, homeFile)}: el cuerpo contiene HTML, scripts o un enlace inseguro.`);
+  validateHome(data, path.relative(root, homeFile));
+} catch (error) {
+  if (error?.code === 'ENOENT') fail('src/content/home.md: falta la entrada de la página de inicio.');
+  else throw error;
+}
 
 for (const file of caseFiles.filter((entry) => entry.endsWith('.md'))) {
   const slug = path.basename(file, '.md');

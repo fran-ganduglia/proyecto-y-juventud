@@ -53,4 +53,32 @@ const novedades = defineCollection({
   }),
 });
 
-export const collections = { cases, novedades };
+const home = defineCollection({
+  loader: glob({ pattern: 'home.md', base: './src/content' }),
+  schema: z.object({
+    hero: z.object({
+      eyebrow: z.string().min(1),
+      title: z.string().min(1),
+      highlight: z.string().min(1),
+      description: z.string().min(1),
+      primaryCta: z.string().min(1),
+      secondaryCta: z.string().min(1),
+    }),
+    process: z.object({
+      eyebrow: z.string().min(1),
+      title: z.string().min(1),
+      steps: z.array(z.object({
+        title: z.string().min(1),
+        description: z.string().min(1),
+      })).length(3, 'El proceso debe tener exactamente tres pasos.'),
+    }),
+    featuredCases: z.object({
+      eyebrow: z.string().min(1),
+      title: z.string().min(1),
+      intro: z.string().min(1),
+      buttonLabel: z.string().min(1),
+    }),
+  }),
+});
+
+export const collections = { cases, novedades, home };

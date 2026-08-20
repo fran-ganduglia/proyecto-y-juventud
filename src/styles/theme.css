@@ -1,3 +1,7 @@
 :root {
-  --yellow: #ff6b00;
+  --yellow: #ffd400;
+}
+
+.hero h1 > span {
+  white-space: pre-line;
 }

@@ -1,0 +1,32 @@
+.admin-notice {
+  position: fixed;
+  z-index: 10000;
+  right: 16px;
+  bottom: 16px;
+  display: grid;
+  max-width: 340px;
+  gap: 4px;
+  padding: 13px 15px;
+  border: 2px solid #090909;
+  border-radius: 5px;
+  background: #ffd400;
+  color: #090909;
+  box-shadow: 4px 4px 0 #090909;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.admin-notice strong {
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 700px) {
+  .admin-notice {
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    max-width: none;
+  }
+}

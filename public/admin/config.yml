@@ -6,9 +6,17 @@ backend:
     update: "cms: actualizar {{collection}} '{{slug}}'"
     delete: "cms: eliminar {{collection}} '{{slug}}'"
 
+# Cada guardado se confirma directamente en main. No hay borradores ni aprobación.
 publish_mode: simple
+locale: es
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
 media_folder: public/uploads
 public_folder: /uploads
+editor:
+  preview: true
 
 collections:
   - name: cases
@@ -20,42 +28,63 @@ collections:
     format: frontmatter
     slug: "{{slug}}"
     fields:
-      - { label: Título, name: title, widget: string }
-      - { label: Resumen, name: summary, widget: text }
-      - { label: Localidad, name: location, widget: string }
+      - { label: Título, name: title, widget: string, hint: "Ej.: Estado de abandono del Cementerio de Lanús." }
+      - { label: Resumen, name: summary, widget: text, hint: "Dos o tres oraciones que expliquen el caso." }
+      - { label: Localidad, name: location, widget: string, hint: "Ej.: Lanús Oeste." }
       - label: Estado
         name: status
         widget: select
+        hint: "Elegí la situación actual del reclamo."
         options: [Recibido, Presentado, En seguimiento, Respondido, Resuelto]
-      - { label: Fecha de publicación, name: publishedAt, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
-      - { label: Fecha de actualización, name: updatedAt, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+      - { label: Fecha de publicación, name: publishedAt, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, hint: "Día en que el caso se hizo público." }
+      - { label: Fecha de actualización, name: updatedAt, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, hint: "Actualizala al incorporar información nueva." }
       - label: Imagen
         name: image
         widget: image
         required: false
         allow_multiple: false
+        choose_url: false
+        hint: "Opcional. Subí JPG, PNG o WebP de hasta 10 MB. El nombre se guarda en minúsculas, sin acentos ni espacios."
         media_library:
           config:
             multiple: false
+            max_file_size: 10485760
       - label: Documentos
         name: documents
         widget: list
         required: false
+        collapsed: true
+        summary: "{{fields.title}}"
+        label_singular: documento
+        hint: "Opcional. Cada documento debe ser un PDF de hasta 10 MB guardado en /uploads/."
         fields:
-          - { label: Título, name: title, widget: string }
-          - { label: Resumen, name: summary, widget: text }
-          - { label: PDF, name: file, widget: file, allow_multiple: false, media_library: { config: { multiple: false } } }
-          - { label: Fecha, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+          - { label: Título, name: title, widget: string, hint: "Ej.: Nota presentada ante el Concejo Deliberante." }
+          - { label: Resumen, name: summary, widget: text, hint: "Explicá en una oración qué contiene el documento." }
+          - label: PDF
+            name: file
+            widget: file
+            allow_multiple: false
+            choose_url: false
+            hint: "Solo PDF de hasta 10 MB. Se guarda en /uploads/ con nombre seguro."
+            media_library:
+              config:
+                multiple: false
+                max_file_size: 10485760
+          - { label: Fecha, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, hint: "Fecha del documento o de su publicación." }
       - label: Enlaces de prensa
         name: pressLinks
         widget: list
         required: false
+        collapsed: true
+        summary: "{{fields.title}}"
+        label_singular: enlace de prensa
+        hint: "Opcional. Usá enlaces públicos que comiencen con https://."
         fields:
-          - { label: Título, name: title, widget: string }
-          - { label: Medio, name: outlet, widget: string }
-          - { label: Tipo, name: kind, widget: select, options: [Nota web, Facebook, Instagram] }
-          - { label: URL https, name: url, widget: string, pattern: ['https://.*', 'Debe comenzar con https://'] }
-      - { label: Cuerpo, name: body, widget: markdown }
+          - { label: Título, name: title, widget: string, hint: "Titular de la nota o publicación." }
+          - { label: Medio, name: outlet, widget: string, hint: "Ej.: Data Conurbano." }
+          - { label: Tipo, name: kind, widget: select, options: [Nota web, Facebook, Instagram], hint: "Elegí dónde se publicó." }
+          - { label: URL https, name: url, widget: string, pattern: ['https://.*', 'Debe comenzar con https://'], hint: "Ej.: https://medio.example/nota" }
+      - { label: Cuerpo, name: body, widget: markdown, hint: "Desarrollá la información del caso. No pegues HTML ni enlaces que no sean https." }
 
   - name: novedades
     label: Novedades
@@ -66,9 +95,9 @@ collections:
     format: frontmatter
     slug: "{{slug}}"
     fields:
-      - { label: Título, name: title, widget: string }
-      - { label: Resumen, name: summary, widget: text }
-      - { label: Fecha, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+      - { label: Título, name: title, widget: string, hint: "Ej.: Se presentó una nota ante el Concejo." }
+      - { label: Resumen, name: summary, widget: text, hint: "Dos o tres oraciones con lo más importante de la novedad." }
+      - { label: Fecha, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, hint: "Día de esta actualización." }
       - label: Caso vinculado
         name: case
         widget: relation
@@ -76,12 +105,60 @@ collections:
         search_fields: [title]
         value_field: "{{slug}}"
         display_fields: [title]
+        hint: "Elegí el caso al que corresponde esta novedad."
       - label: Imagen
         name: image
         widget: image
         required: false
         allow_multiple: false
+        choose_url: false
+        hint: "Opcional. Subí JPG, PNG o WebP de hasta 10 MB. El nombre se guarda en minúsculas, sin acentos ni espacios."
         media_library:
           config:
             multiple: false
-      - { label: Cuerpo, name: body, widget: markdown }
+            max_file_size: 10485760
+      - { label: Cuerpo, name: body, widget: markdown, hint: "Contá el avance con párrafos breves. No pegues HTML ni enlaces que no sean https." }
+
+  - name: pages
+    label: Páginas
+    files:
+      - name: home
+        label: Página de inicio
+        file: src/content/home.md
+        fields:
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Antetítulo, name: eyebrow, widget: string, hint: "Ej.: Organización civil · Lanús." }
+              - { label: Título, name: title, widget: text, hint: "Escribí el título principal sin la frase destacada. Podés separar líneas con Enter." }
+              - { label: Frase destacada, name: highlight, widget: string, hint: "Ej.: escuchado." }
+              - { label: Descripción, name: description, widget: text, hint: "Explicá brevemente qué hace la organización." }
+              - { label: Texto del CTA principal, name: primaryCta, widget: string, hint: "Este botón sigue llevando al formulario." }
+              - { label: Texto del CTA secundario, name: secondaryCta, widget: string, hint: "Este enlace sigue llevando a la sección del proceso." }
+          - label: Proceso
+            name: process
+            widget: object
+            fields:
+              - { label: Antetítulo, name: eyebrow, widget: string, hint: "Ej.: Así trabajamos." }
+              - { label: Título, name: title, widget: string, hint: "Ej.: De tu barrio al Concejo Deliberante." }
+              - label: Pasos
+                name: steps
+                widget: list
+                min: 3
+                max: 3
+                collapsed: true
+                summary: "{{fields.title}}"
+                label_singular: paso
+                hint: "Siempre son exactamente tres pasos. Editá sus textos sin alterar el orden general."
+                fields:
+                  - { label: Título, name: title, widget: string, hint: "Ej.: Recibimos." }
+                  - { label: Descripción, name: description, widget: text, hint: "Una explicación breve del paso." }
+          - label: Casos destacados
+            name: featuredCases
+            widget: object
+            fields:
+              - { label: Antetítulo, name: eyebrow, widget: string, hint: "Ej.: Transparencia." }
+              - { label: Título, name: title, widget: string, hint: "Ej.: Casos documentados." }
+              - { label: Texto introductorio, name: intro, widget: text, hint: "Presentá las tarjetas de casos más recientes." }
+              - { label: Texto del botón, name: buttonLabel, widget: string, hint: "Este botón sigue llevando al archivo de casos." }
