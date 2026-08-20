@@ -33,6 +33,7 @@ collections:
         name: image
         widget: image
         required: false
+        allow_multiple: false
         media_library:
           config:
             multiple: false
@@ -43,7 +44,7 @@ collections:
         fields:
           - { label: Título, name: title, widget: string }
           - { label: Resumen, name: summary, widget: text }
-          - { label: PDF, name: file, widget: file, media_library: { config: { multiple: false } } }
+          - { label: PDF, name: file, widget: file, allow_multiple: false, media_library: { config: { multiple: false } } }
           - { label: Fecha, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
       - label: Enlaces de prensa
         name: pressLinks
@@ -79,6 +80,7 @@ collections:
         name: image
         widget: image
         required: false
+        allow_multiple: false
         media_library:
           config:
             multiple: false
