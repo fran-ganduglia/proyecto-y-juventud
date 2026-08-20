@@ -3,11 +3,11 @@ title: Estado de abandono del Cementerio de Lanús
 summary: Primer reclamo difundido públicamente por la organización sobre la
   situación del cementerio. El caso reúne una propuesta técnica y repercusiones
   en medios y redes.
-location: Lanús
+location: "Lanús "
 status: Presentado
 publishedAt: 2026-08-13
 updatedAt: 2026-08-17
-image: ""
+image: /uploads/favicon.png
 documents:
   - title: Programa "Cementerio — 365 días"
     summary: Propuesta técnica sobre la situación del Cementerio de Lanús y posibles
