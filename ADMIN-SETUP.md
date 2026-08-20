@@ -14,7 +14,7 @@ El panel no admite borradores: cada guardado escribe en `main` y dispara un depl
 
 ## Novedades automáticas
 
-El panel editorial solo permite administrar **Casos**. Cada caso creado o actualizado genera automáticamente una Novedad vinculada mediante el workflow `Registrar novedades de casos` de GitHub Actions. El texto identifica, cuando corresponde, una fuente de prensa, un documento o un cambio de estado; para otros cambios registra una actualización general. Eliminar un caso no genera una Novedad.
+El panel editorial solo permite administrar **Casos**. Cada caso creado o actualizado genera automáticamente una Novedad vinculada mediante el workflow `Registrar novedades de casos` de GitHub Actions. El texto identifica, cuando corresponde, una fuente de prensa, un documento o un cambio de estado; para otros cambios registra una actualización general. Eliminar un caso no genera una Novedad. Si el siguiente guardado revierte exactamente un cambio automático, la Novedad asociada también se elimina.
 
 La automatización necesita que el repositorio permita a GitHub Actions escribir contenido (`contents: write`). No edites archivos dentro de `src/content/novedades/` a mano: son el historial generado a partir de los casos.
 

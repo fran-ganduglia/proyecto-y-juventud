@@ -1,5 +1,6 @@
 import { execFileSync } from 'node:child_process';
-import { access, mkdir, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { access, mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { parse, stringify } from 'yaml';
@@ -50,6 +51,75 @@ function keyForDocument(document) {
 function addedItems(previous = [], current = [], key) {
   const previousKeys = new Set(previous.map(key));
   return current.filter((item) => !previousKeys.has(key(item)));
+}
+
+function normalizedValue(value) {
+  if (value instanceof Date) return value.toISOString();
+  if (typeof value === 'string') return value.replace(/\r\n/g, '\n').trim();
+  if (Array.isArray(value)) return value.map(normalizedValue);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.keys(value).sort().map((key) => [key, normalizedValue(value[key])]));
+  }
+  return value;
+}
+
+function fingerprint(entry) {
+  return createHash('sha256').update(JSON.stringify(normalizedValue(entry))).digest('hex');
+}
+
+async function automaticNews(slug) {
+  let names = [];
+  try {
+    names = await readdir(newsDirectory);
+  } catch {
+    return [];
+  }
+  const entries = await Promise.all(names.filter((name) => name.endsWith('.md')).map(async (name) => {
+    const file = path.join(newsDirectory, name);
+    const entry = readFrontmatter(await readFile(file, 'utf8'), file);
+    return { file, name, entry };
+  }));
+  return entries.filter(({ entry }) => entry.data.case === slug);
+}
+
+function legacySourceCommit(slug, name) {
+  const match = name.match(new RegExp(`^${slug}-([a-f0-9]{7,40})\\.md$`));
+  if (!match) return undefined;
+  try {
+    return git(['rev-parse', `${match[1]}^{commit}`]);
+  } catch {
+    return undefined;
+  }
+}
+
+async function revertedNews(slug, previous, current) {
+  const previousFingerprint = fingerprint(previous);
+  const currentFingerprint = fingerprint(current);
+  const caseFile = `${casesDirectory}/${slug}.md`;
+  const entries = await automaticNews(slug);
+  for (const candidate of entries) {
+    const automation = candidate.entry.data.automation;
+    if (automation?.afterFingerprint === previousFingerprint && automation?.beforeFingerprint === currentFingerprint) {
+      return candidate;
+    }
+
+    // Compatibilidad con las Novedades automáticas creadas antes de guardar
+    // metadatos. El nombre conserva el commit de origen para poder verificarlas.
+    if (!automation) {
+      const sourceCommit = legacySourceCommit(slug, candidate.name);
+      if (!sourceCommit) continue;
+      try {
+        const sourceBefore = readFrontmatter(contentAt(`${sourceCommit}^`, caseFile), caseFile);
+        const sourceAfter = readFrontmatter(contentAt(sourceCommit, caseFile), caseFile);
+        if (fingerprint(sourceAfter) === previousFingerprint && fingerprint(sourceBefore) === currentFingerprint) {
+          return candidate;
+        }
+      } catch {
+        // Si el historial no contiene el commit de origen, se conserva la Novedad.
+      }
+    }
+  }
+  return undefined;
 }
 
 function newsCopy(previous, current, isNew) {
@@ -121,18 +191,28 @@ async function exists(file) {
 
 const files = changedCaseFiles(beforeInput, after);
 const created = [];
+const removed = [];
 for (const file of files) {
   const slug = path.basename(file, '.md');
-  const current = readFrontmatter(contentAt(after, file), file).data;
-  let previous = {};
+  const current = readFrontmatter(contentAt(after, file), file);
+  let previous = { data: {}, body: '' };
   let isNew = false;
   try {
-    previous = readFrontmatter(contentAt(beforeInput, file), file).data;
+    previous = readFrontmatter(contentAt(beforeInput, file), file);
   } catch {
     isNew = true;
   }
 
-  const copy = newsCopy(previous, current, isNew);
+  if (!isNew) {
+    const reverted = await revertedNews(slug, previous, current);
+    if (reverted) {
+      if (!dryRun) await unlink(reverted.file);
+      removed.push(path.relative(root, reverted.file));
+      continue;
+    }
+  }
+
+  const copy = newsCopy(previous.data, current.data, isNew);
   const filename = `${slug}-${after.slice(0, 7)}.md`;
   const destination = path.join(newsDirectory, filename);
   if (await exists(destination)) continue;
@@ -141,6 +221,11 @@ for (const file of files) {
     summary: copy.summary,
     date: dateInArgentina(after),
     case: slug,
+    automation: {
+      sourceCommit: after,
+      beforeFingerprint: isNew ? undefined : fingerprint(previous),
+      afterFingerprint: fingerprint(current),
+    },
   }, { defaultStringType: 'QUOTE_DOUBLE', lineWidth: 0 }).trim();
   const source = `---\n${frontmatter}\n---\n\n${copy.body}\n`;
 
@@ -151,4 +236,7 @@ for (const file of files) {
   created.push(path.relative(root, destination));
 }
 
-console.log(created.length ? `Novedades generadas:\n${created.join('\n')}` : 'No hay novedades para generar.');
+const output = [];
+if (created.length) output.push(`Novedades generadas:\n${created.join('\n')}`);
+if (removed.length) output.push(`Novedades revertidas:\n${removed.join('\n')}`);
+console.log(output.length ? output.join('\n') : 'No hay novedades para generar ni revertir.');
