@@ -2,10 +2,14 @@
   var CMS = window.CMS;
   var h = window.h;
   var createClass = window.createClass;
+  var currentScript = document.currentScript;
+  var previewStylesheet = currentScript
+    ? new URL('preview.css', currentScript.src).toString()
+    : 'preview.css';
 
   if (!CMS || !h || !createClass) return;
 
-  CMS.registerPreviewStyle('/admin/preview.css');
+  CMS.registerPreviewStyle(previewStylesheet);
 
   function text(value, fallback) {
     return value === undefined || value === null || value === '' ? fallback : String(value);
@@ -71,7 +75,7 @@
       h('div', { className: 'preview-canvas preview-canvas--' + component.state.device },
         h('div', { className: 'preview-browser-bar', 'aria-hidden': 'true' },
           h('span', {}, '●'), h('span', {}, '●'), h('span', {}, '●'),
-          h('span', { className: 'preview-browser-url' }, 'proyectoyjuventud.org.ar')
+          h('span', { className: 'preview-browser-url' }, 'ongopj.com.ar')
         ),
         content
       )
