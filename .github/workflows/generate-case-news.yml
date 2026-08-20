@@ -21,6 +21,9 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Instalar dependencias del generador
+        run: npm ci
+
       - name: Generar novedades para casos creados o modificados
         run: node scripts/generate-case-news.mjs "${{ github.event.before }}" "${{ github.sha }}"
 
