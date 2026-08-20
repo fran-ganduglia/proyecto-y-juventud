@@ -1,0 +1,16 @@
+{
+  "name": "Organización Proyecto y Juventud",
+  "short_name": "Proyecto y Juventud",
+  "lang": "es-AR",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#f5f4f0",
+  "theme_color": "#ffd400",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "255x256",
+      "type": "image/png"
+    }
+  ]
+}

@@ -6,20 +6,29 @@ import Logo from './Logo.astro';
     <Logo />
   </a>
   <nav class="desktop-nav" aria-label="Navegación principal">
-    <a href="#inicio">Inicio</a><a href="#nosotros">Nosotros</a><a href="#casos">Problemáticas</a><a href="#participa">Participá</a><a href="#contacto">Contacto</a>
+    <a href="#inicio">Inicio</a><a href="#nosotros">Nosotros</a><a href="#casos">Problemáticas</a><a href="#contacto">Contacto</a>
   </nav>
   <a class="button button--small" href="#problematica">Contanos tu problemática</a>
   <a class="mobile-cta" href="#problematica">Contanos</a>
   <details class="mobile-menu">
     <summary><span class="sr-only">Abrir menú</span><span aria-hidden="true">☰</span></summary>
     <nav aria-label="Navegación móvil">
-      <a href="#inicio">Inicio</a><a href="#nosotros">Nosotros</a><a href="#casos">Problemáticas</a><a href="#participa">Participá</a><a href="#contacto">Contacto</a>
+      <a href="#inicio">Inicio</a><a href="#nosotros">Nosotros</a><a href="#casos">Problemáticas</a>
       <a class="mobile-menu__cta" href="#problematica">Contanos tu problemática</a>
     </nav>
   </details>
 </header>
 
 <script>
+  const header = document.querySelector('.site-header');
+
+  const updateHeaderAppearance = () => {
+    header?.classList.toggle('site-header--scrolled', window.scrollY > 8);
+  };
+
+  updateHeaderAppearance();
+  window.addEventListener('scroll', updateHeaderAppearance, { passive: true });
+
   document.querySelectorAll('.mobile-menu a').forEach((link) => {
     link.addEventListener('click', () => {
       const menu = link.closest('.mobile-menu');

@@ -293,15 +293,6 @@
   line-height: 1.02 !important;
 }
 
-.form-intro {
-  padding: 13px 15px;
-  background: var(--paper);
-  border-left: 4px solid var(--yellow);
-  color: #4b4b4b;
-  font-size: 13px;
-  line-height: 1.45;
-}
-
 .required-mark { color: #9d7200; font-weight: 900; }
 .optional-mark { color: #686868; font-size: 11px; font-weight: 400; }
 .form-section label > .field-label-text, .form-section label > input:not([type="checkbox"]), .form-section label > textarea, .form-section label > select, .form-section label > .field-help { grid-column: 1 / -1; }
@@ -309,20 +300,118 @@
 .form-section input[type="file"] { padding: 9px; background: #fff; }
 .field-help { color: #686868; font-size: 11px; font-weight: 400; line-height: 1.35; }
 .consent-box { display: grid; gap: 12px; padding: 16px; border: 2px solid var(--yellow); background: #fffbe1; }
-.consent-box__title { margin: 0; color: var(--ink); font-size: 12px; font-weight: 900; text-transform: uppercase; }
 .consent-box .checkbox { margin: 0; }
 .consent-box strong { color: #6e5200; font-size: 10px; text-transform: uppercase; }
+.form-mobile-heading { display: none; }
+
+html { scroll-padding-top: 88px; }
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(9, 9, 9, .98);
+  transition: background-color .22s ease, backdrop-filter .22s ease;
+}
+
+.site-header--scrolled {
+  background: rgba(9, 9, 9, .72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.media-card { transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease; }
+.media-card--featured:hover { background: #fff; }
+
+@media (max-width: 800px) {
+  .form-layout { gap: 36px; }
+
+  .form-layout > div > .section-kicker,
+  .form-layout > div > .form-title { text-align: center; }
+
+  .form-mobile-heading {
+    display: block;
+    margin: 0 0 4px;
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .process__steps .arrow {
+    display: grid;
+    width: 100%;
+    height: 28px;
+    place-items: center;
+    transform: none;
+    font-size: 0;
+    line-height: 1;
+  }
+
+  .process__steps .arrow::after {
+    content: "↓";
+    font-size: 34px;
+  }
+
+  /* En móvil los medios son una lista compacta, no tarjetas de altura fija. */
+  .media-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .media-card--featured { grid-column: auto; }
+
+  .media-card a {
+    height: auto;
+    min-height: 0;
+    padding: 18px;
+  }
+
+  .media-card__outlet { margin: 20px 0 8px; }
+  .media-card h3 { font-size: 24px; line-height: 1; }
+  .media-card__link { margin-top: 22px; padding-top: 0; }
+
+  .logo-compacto {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .footer__content {
+    justify-items: center;
+    gap: 20px;
+  }
+
+  .footer__contact {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .footer__facebook { min-width: 0; }
+  .footer__contact > a:first-child { justify-self: start; }
+  .footer__facebook { justify-self: end; }
+}
 
 @media (max-width: 600px) {
+  .media { padding: 48px 0; }
   .media-heading { display: block; }
   .media-heading__copy { margin-top: 22px; }
-  .media-card--featured { grid-column: auto; }
-  .media-card a { min-height: 250px; padding: 20px; }
+  .media-card a { padding: 16px; }
+  .media-card__outlet { margin-top: 16px; }
+  .media-card h3 { font-size: 22px; }
+  .media-card__link { margin-top: 18px; }
   .facebook-feature { grid-template-columns: 1fr; gap: 18px; margin-top: 32px; padding: 20px; }
   .facebook-feature img { width: 88px; height: 88px; }
   .facebook-feature h3 { font-size: 25px; }
   .facebook-feature .button { width: 100%; text-align: center; }
-  .footer__contact { align-items: flex-start; justify-content: start; flex-direction: column; gap: 14px; }
+  .footer__contact { gap: 10px; font-size: 11px; }
   .form-section form { min-width: 0; }
   .form-section label { min-width: 0; }
   .form-section input, .form-section textarea, .form-section select { max-width: 100%; }
@@ -376,7 +465,12 @@
   }
 
   .mobile-menu nav a:hover {
-    background: #f5f4f0;
+    background: rgba(255, 255, 255, .12);
+    color: #fff;
+  }
+
+  .mobile-menu nav .mobile-menu__cta:hover {
+    background: var(--yellow);
     color: var(--ink);
   }
 
