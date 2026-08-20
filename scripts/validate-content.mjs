@@ -15,6 +15,9 @@ const isSlug = (value) => typeof value === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)
 const isText = (value) => typeof value === 'string' && value.trim().length > 0;
 const startsWithBytes = (value, bytes) => bytes.every((byte, index) => value[index] === byte);
 const validDate = (value) => Boolean(value) && !Number.isNaN(new Date(value).getTime());
+const safeFilename = '[a-z0-9]+(?:-[a-z0-9]+)*';
+const imagePath = new RegExp(`^/uploads/(?:${safeFilename}\\.(?:jpg|jpeg|png|webp)|casos/${safeFilename}/imagenes/${safeFilename}\\.(?:jpg|jpeg|png|webp)|novedades/${safeFilename}/${safeFilename}\\.(?:jpg|jpeg|png|webp))$`);
+const documentPath = new RegExp(`^/uploads/(?:${safeFilename}\\.pdf|casos/${safeFilename}/documentos/${safeFilename}\\.pdf)$`);
 
 async function filesIn(directory) {
   let entries;
@@ -106,11 +109,14 @@ for (const file of caseFiles.filter((entry) => entry.endsWith('.md'))) {
   if (!statuses.has(data.status)) fail(`${path.relative(root, file)}: estado no permitido.`);
   if (!validDate(data.publishedAt) || !validDate(data.updatedAt)) fail(`${path.relative(root, file)}: publishedAt y updatedAt deben ser fechas válidas.`);
   if (containsUnsafeMarkup(body)) fail(`${path.relative(root, file)}: el cuerpo contiene HTML, scripts o un enlace inseguro.`);
-  if (data.image) await validateAsset(data.image, `${path.relative(root, file)}.image`, 'image');
+  if (data.image) {
+    if (!imagePath.test(data.image)) fail(`${path.relative(root, file)}.image: debe quedar en /uploads/ con un nombre seguro.`);
+    await validateAsset(data.image, `${path.relative(root, file)}.image`, 'image');
+  }
   if (!Array.isArray(data.documents)) fail(`${path.relative(root, file)}: documents debe ser una lista.`);
   for (const [index, document] of (data.documents ?? []).entries()) {
     if (!isText(document?.title) || !isText(document?.summary) || !document?.date) fail(`${path.relative(root, file)}.documents[${index}]: faltan campos obligatorios.`);
-    if (!document?.file?.startsWith(`/uploads/casos/${slug}/documentos/`)) fail(`${path.relative(root, file)}.documents[${index}]: el PDF debe quedar dentro del caso.`);
+    if (!documentPath.test(document?.file ?? '')) fail(`${path.relative(root, file)}.documents[${index}]: el PDF debe quedar en /uploads/ con un nombre seguro.`);
     await validateAsset(document?.file, `${path.relative(root, file)}.documents[${index}].file`, 'pdf');
   }
   if (!Array.isArray(data.pressLinks)) fail(`${path.relative(root, file)}: pressLinks debe ser una lista.`);
@@ -132,7 +138,7 @@ for (const file of newsFiles.filter((entry) => entry.endsWith('.md'))) {
   if (!cases.includes(data.case)) fail(`${path.relative(root, file)}: el caso vinculado no existe.`);
   if (containsUnsafeMarkup(body)) fail(`${path.relative(root, file)}: el cuerpo contiene HTML, scripts o un enlace inseguro.`);
   if (data.image) {
-    if (!data.image.startsWith(`/uploads/novedades/${slug}/`)) fail(`${path.relative(root, file)}.image: debe quedar dentro de la carpeta de la novedad.`);
+    if (!imagePath.test(data.image)) fail(`${path.relative(root, file)}.image: debe quedar en /uploads/ con un nombre seguro.`);
     await validateAsset(data.image, `${path.relative(root, file)}.image`, 'image');
   }
   news.push(slug);
@@ -141,9 +147,8 @@ for (const file of newsFiles.filter((entry) => entry.endsWith('.md'))) {
 const uploadedFiles = await filesIn(uploadRoot);
 for (const file of uploadedFiles) {
   const relative = path.relative(uploadRoot, file).replaceAll(path.sep, '/');
-  if (!/^casos\/[a-z0-9]+(?:-[a-z0-9]+)*\/(?:documentos\/[a-z0-9]+(?:-[a-z0-9]+)*\.pdf|imagenes\/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp))$/.test(relative)
-    && !/^novedades\/[a-z0-9]+(?:-[a-z0-9]+)*\/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp)$/.test(relative)) {
-    fail(`public/uploads/${relative}: debe guardarse por tipo y slug, con un nombre seguro.`);
+  if (!new RegExp(`^(?:${safeFilename}\\.(?:pdf|jpg|jpeg|png|webp)|casos/${safeFilename}/(?:documentos/${safeFilename}\\.pdf|imagenes/${safeFilename}\\.(?:jpg|jpeg|png|webp))|novedades/${safeFilename}/${safeFilename}\\.(?:jpg|jpeg|png|webp))$`).test(relative)) {
+    fail(`public/uploads/${relative}: debe tener un nombre seguro.`);
   }
   await validateAsset(`/uploads/${relative}`, `public/uploads/${relative}`);
 }

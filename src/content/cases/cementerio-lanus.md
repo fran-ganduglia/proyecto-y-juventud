@@ -8,11 +8,11 @@ updatedAt: 2026-08-17
 documents:
   - title: Programa "Cementerio — 365 días"
     summary: Propuesta técnica sobre la situación del Cementerio de Lanús y posibles líneas de acción.
-    file: /uploads/casos/cementerio-lanus/documentos/programa-cementerio-365.pdf
+    file: /uploads/cementerio-lanus-programa-365.pdf
     date: 2026-08-17
   - title: Nota presentada ante el Concejo Deliberante
     summary: Solicitud de información pública sobre el estado y el mantenimiento del Cementerio Municipal de Lanús.
-    file: /uploads/casos/cementerio-lanus/documentos/nota-al-concejo-deliberante.pdf
+    file: /uploads/cementerio-lanus-nota-concejo.pdf
     date: 2026-08-13
 pressLinks:
   - title: Denuncian estado de abandono y restos humanos expuestos en el Cementerio de Lanús

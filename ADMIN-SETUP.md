@@ -16,12 +16,8 @@ El panel no admite borradores: cada guardado escribe en `main` y dispara un depl
 
 Todo lo subido se hace público tras el deploy. No cargar DNI, teléfonos, domicilios, datos de denunciantes, información médica ni material sin autorización.
 
-Antes de guardar, organizá los archivos así (en el selector de medios se puede crear/navegar carpetas):
+Antes de guardar, subí todo directamente a `public/uploads/`. Usá nombres descriptivos y únicos, en minúsculas, sin espacios ni acentos; por ejemplo: `cementerio-lanus-foto-frente.jpg` o `cementerio-lanus-nota-concejo.pdf`. El selector estándar de Decap no admite organizar las cargas en subcarpetas.
 
-- `public/uploads/casos/<slug-del-caso>/documentos/<archivo>.pdf`
-- `public/uploads/casos/<slug-del-caso>/imagenes/<archivo>.jpg|png|webp`
-- `public/uploads/novedades/<slug-de-la-novedad>/<archivo>.jpg|png|webp`
-
-Los nombres y slugs deben ser minúsculos, sin espacios ni acentos. La validación previa al build rechaza archivos fuera de esas rutas, mayores de 10 MB o que no sean PDF, JPG, PNG o WebP reales; también bloquea slugs/referencias inválidas, URLs que no sean HTTPS y HTML o scripts en el contenido. Un fallo conserva publicado el deploy anterior de Netlify.
+La validación previa al build rechaza archivos fuera de esa carpeta, mayores de 10 MB o que no sean PDF, JPG, PNG o WebP reales; también bloquea nombres inseguros, slugs/referencias inválidas, URLs que no sean HTTPS y HTML o scripts en el contenido. Los archivos ya existentes en la estructura anterior siguen siendo válidos. Un fallo conserva publicado el deploy anterior de Netlify.
 
 La versión de Decap está fijada en `3.7.0`. Antes de alterar la CSP de `public/_headers`, comprobá inicio de sesión Google, subida de archivos y guardado desde el panel de producción.
