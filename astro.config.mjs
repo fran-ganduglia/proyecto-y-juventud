@@ -1,10 +1,9 @@
 import { defineConfig } from 'astro/config';
 
-const site = process.env.SITE_URL?.replace(/\/$/, '');
+const site = process.env.SITE_URL?.replace(/\/$/, '') || 'https://ongopj.com.ar';
 
 export default defineConfig({
   output: 'static',
-  // Set SITE_URL to the single, public production URL (including https://).
-  // Astro uses it to create canonical URLs and the sitemap.
-  ...(site ? { site } : {}),
+  // Override SITE_URL only when the public canonical domain changes.
+  site,
 });

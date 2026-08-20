@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <meta http-equiv="Cache-Control" content="no-store, max-age=0" />
+    <title>Proyecto y Juventud — Administración</title>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  </head>
+  <body>
+    <script src="https://unpkg.com/decap-cms@3.7.0/dist/decap-cms.js"></script>
+    <script>
+      window.netlifyIdentity?.on('init', (user) => {
+        if (!user) window.netlifyIdentity?.on('login', () => window.location.reload());
+      });
+    </script>
+  </body>
+</html>

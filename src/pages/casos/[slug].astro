@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import { contentSlug, formatDate, getNews } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const cases = await getCollection('cases');
+  return cases.map((entry) => ({ params: { slug: contentSlug(entry) }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const slug = contentSlug(entry);
+const news = (await getNews()).filter((item) => item.data.case === slug);
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: entry.data.title,
+  description: entry.data.summary,
+  datePublished: entry.data.publishedAt.toISOString(),
+  dateModified: entry.data.updatedAt.toISOString(),
+  author: { '@type': 'Organization', name: 'Proyecto y Juventud' },
+};
+---
+<BaseLayout title={`${entry.data.title} | Proyecto y Juventud`} description={entry.data.summary} structuredData={schema}>
+  <Header dark />
+  <main class="case-page"><article><header class="archive-hero"><div class="container"><p class="section-kicker">Caso · {entry.data.location}</p><h1>{entry.data.title}</h1><p>{entry.data.summary}</p><div class="meta-row"><span class:list={['status', entry.data.status.toLowerCase().replaceAll(' ', '-')]}>{entry.data.status}</span><span>Publicado {formatDate(entry.data.publishedAt)} · Actualizado {formatDate(entry.data.updatedAt)}</span></div></div></header><div class="container case-content"><div class="prose"><Content /></div>{entry.data.image && <img class="content-image" src={entry.data.image} alt="" loading="lazy" />}
+      <section aria-labelledby="documents-heading"><p class="section-kicker">Documentación</p><h2 id="documents-heading">Documentos del caso</h2><div class="document-list">{entry.data.documents.map((document) => <article class="document-item"><span class="document-card__icon" aria-hidden="true">PDF</span><div><h3>{document.title}</h3><p>{document.summary}</p><p class="small-meta">{formatDate(document.date)}</p><div class="document-card__actions"><a class="button" href={document.file} target="_blank" rel="noopener">Ver documento</a><a class="text-link" href={document.file} download>Descargar PDF <span>↓</span></a></div></div></article>)}</div></section>
+      <section aria-labelledby="timeline-heading"><p class="section-kicker">Seguimiento</p><h2 id="timeline-heading">Línea de tiempo</h2><div class="timeline"><div class="timeline-item"><time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time><h3>Publicación del caso</h3><p>{entry.data.summary}</p></div>{news.map((item) => <div class="timeline-item"><time datetime={item.data.date.toISOString()}>{formatDate(item.data.date)}</time><h3><a href={`/novedades/${contentSlug(item)}/`}>{item.data.title}</a></h3><p>{item.data.summary}</p></div>)}</div></section>
+      <section aria-labelledby="press-heading"><p class="section-kicker">Difusión pública</p><h2 id="press-heading">Enlaces de prensa</h2><div class="press-list">{entry.data.pressLinks.map((link) => <a class="press-link" href={link.url} target="_blank" rel="noopener noreferrer"><span>{link.kind} · {link.outlet}</span><strong>{link.title}</strong><span aria-hidden="true">↗</span></a>)}</div></section>
+    </div></article></main>
+</BaseLayout>

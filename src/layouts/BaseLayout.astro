@@ -10,12 +10,14 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
   title = 'Organización Proyecto y Juventud en Lanús',
   description = 'Proyecto y Juventud acompaña reclamos y problemáticas de vecinos de Lanús, los presenta ante el Concejo Deliberante y les da visibilidad pública.',
   noindex = false,
+  structuredData,
 } = Astro.props;
 
 const siteUrl = Astro.site?.href;
@@ -36,6 +38,7 @@ const organizationSchema = {
   ...(siteUrl ? { url: siteUrl } : {}),
   ...(socialImageUrl ? { logo: socialImageUrl } : {}),
 };
+const schemas = [organizationSchema, ...(structuredData ? (Array.isArray(structuredData) ? structuredData : [structuredData]) : [])];
 ---
 <!doctype html>
 <html lang="es-AR">
@@ -63,7 +66,7 @@ const organizationSchema = {
     <meta name="twitter:description" content={description} />
     {socialImageUrl && <meta name="twitter:image" content={socialImageUrl} />}
     <title>{title}</title>
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+    {schemas.map((schema) => <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />)}
   </head>
   <body><slot /></body>
 </html>

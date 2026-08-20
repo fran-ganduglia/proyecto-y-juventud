@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import { contentSlug, formatDate, getNews } from '../../lib/content';
+
+const news = await getNews();
+const schema = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Novedades | Proyecto y Juventud', description: 'Novedades sobre los casos y acciones de Proyecto y Juventud.' };
+---
+<BaseLayout title="Novedades | Proyecto y Juventud" description="Novedades sobre los casos y acciones de Proyecto y Juventud." structuredData={schema}>
+  <Header dark />
+  <main class="archive-page"><section class="archive-hero"><div class="container"><p class="section-kicker">Seguimiento público</p><h1>Novedades</h1><p>Actualizaciones sobre los casos y las acciones de Proyecto y Juventud.</p></div></section><section class="archive-list"><div class="container">{news.length ? <div class="content-grid">{news.map((entry) => <article class="content-card"><p class="section-kicker">{formatDate(entry.data.date)}</p><h2><a href={`/novedades/${contentSlug(entry)}/`}>{entry.data.title}</a></h2><p>{entry.data.summary}</p><a class="text-link" href={`/casos/${entry.data.case}/`}>Ver caso vinculado <span>→</span></a></article>)}</div> : <p class="empty-state">Todavía no hay novedades publicadas.</p>}</div></section></main>
+</BaseLayout>

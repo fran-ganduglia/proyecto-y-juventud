@@ -1,0 +1,85 @@
+backend:
+  name: git-gateway
+  branch: main
+  commit_messages:
+    create: "cms: crear {{collection}} '{{slug}}'"
+    update: "cms: actualizar {{collection}} '{{slug}}'"
+    delete: "cms: eliminar {{collection}} '{{slug}}'"
+
+publish_mode: simple
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: cases
+    label: Casos
+    label_singular: Caso
+    folder: src/content/cases
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    fields:
+      - { label: Título, name: title, widget: string }
+      - { label: Resumen, name: summary, widget: text }
+      - { label: Localidad, name: location, widget: string }
+      - label: Estado
+        name: status
+        widget: select
+        options: [Recibido, Presentado, En seguimiento, Respondido, Resuelto]
+      - { label: Fecha de publicación, name: publishedAt, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+      - { label: Fecha de actualización, name: updatedAt, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+      - label: Imagen
+        name: image
+        widget: image
+        required: false
+        media_library:
+          config:
+            multiple: false
+      - label: Documentos
+        name: documents
+        widget: list
+        required: false
+        fields:
+          - { label: Título, name: title, widget: string }
+          - { label: Resumen, name: summary, widget: text }
+          - { label: PDF, name: file, widget: file, media_library: { config: { multiple: false } } }
+          - { label: Fecha, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+      - label: Enlaces de prensa
+        name: pressLinks
+        widget: list
+        required: false
+        fields:
+          - { label: Título, name: title, widget: string }
+          - { label: Medio, name: outlet, widget: string }
+          - { label: Tipo, name: kind, widget: select, options: [Nota web, Facebook, Instagram] }
+          - { label: URL https, name: url, widget: string, pattern: ['https://.*', 'Debe comenzar con https://'] }
+      - { label: Cuerpo, name: body, widget: markdown }
+
+  - name: novedades
+    label: Novedades
+    label_singular: Novedad
+    folder: src/content/novedades
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    fields:
+      - { label: Título, name: title, widget: string }
+      - { label: Resumen, name: summary, widget: text }
+      - { label: Fecha, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+      - label: Caso vinculado
+        name: case
+        widget: relation
+        collection: cases
+        search_fields: [title]
+        value_field: "{{slug}}"
+        display_fields: [title]
+      - label: Imagen
+        name: image
+        widget: image
+        required: false
+        media_library:
+          config:
+            multiple: false
+      - { label: Cuerpo, name: body, widget: markdown }

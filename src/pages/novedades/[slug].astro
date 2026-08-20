@@ -1,0 +1,21 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import { contentSlug, formatDate, getNews } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const news = await getNews();
+  return news.map((entry) => ({ params: { slug: contentSlug(entry) }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const cases = await getCollection('cases');
+const relatedCase = cases.find((item) => contentSlug(item) === entry.data.case);
+const schema = { '@context': 'https://schema.org', '@type': 'NewsArticle', headline: entry.data.title, description: entry.data.summary, datePublished: entry.data.date.toISOString(), author: { '@type': 'Organization', name: 'Proyecto y Juventud' } };
+---
+<BaseLayout title={`${entry.data.title} | Proyecto y Juventud`} description={entry.data.summary} structuredData={schema}>
+  <Header dark />
+  <main class="case-page"><article><header class="archive-hero"><div class="container"><p class="section-kicker">Novedad · {formatDate(entry.data.date)}</p><h1>{entry.data.title}</h1><p>{entry.data.summary}</p></div></header><div class="container case-content">{entry.data.image && <img class="content-image" src={entry.data.image} alt="" loading="lazy" />}<div class="prose"><Content /></div>{relatedCase && <p class="related-case">Caso vinculado: <a href={`/casos/${contentSlug(relatedCase)}/`}>{relatedCase.data.title}</a></p>}</div></article></main>
+</BaseLayout>

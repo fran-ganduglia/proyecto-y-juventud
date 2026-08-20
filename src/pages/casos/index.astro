@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import { contentSlug, formatDate, getCases } from '../../lib/content';
+
+const cases = await getCases();
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Casos documentados | Proyecto y Juventud',
+  description: 'Archivo de casos, documentación y acciones públicas de Proyecto y Juventud.',
+};
+---
+<BaseLayout title="Casos documentados | Proyecto y Juventud" description="Archivo de casos, documentación y acciones públicas de Proyecto y Juventud." structuredData={schema}>
+  <Header dark />
+  <main class="archive-page"><section class="archive-hero"><div class="container"><p class="section-kicker">Transparencia</p><h1>Casos documentados</h1><p>Información, documentos y novedades de las problemáticas acompañadas por la organización.</p></div></section><section class="archive-list"><div class="container"><div class="content-grid">{cases.map((entry) => <article class="content-card"><p class="section-kicker">{entry.data.location} · Actualizado {formatDate(entry.data.updatedAt)}</p><h2><a href={`/casos/${contentSlug(entry)}/`}>{entry.data.title}</a></h2><p>{entry.data.summary}</p><div class="content-card__footer"><span class:list={['status', entry.data.status.toLowerCase().replaceAll(' ', '-')]}>{entry.data.status}</span><a class="text-link" href={`/casos/${contentSlug(entry)}/`}>Conocer el caso <span>→</span></a></div></article>)}</div></div></section></main>
+</BaseLayout>
