@@ -9,7 +9,7 @@ status: Recibido
 publishedAt: 2026-08-29
 updatedAt: 2026-08-29
 documents:
-  - file: /uploads/investigacion-n-2-bacheo-pdf.pdf
+  - file: /uploads/investigacion-n-2-bacheos-y-asfalto-sin-solucion-pdf.pdf
     date: 2026-08-29
     title: “Baches y asfalto sin solución”
     summary: Trabajo de Investigacion- Plan de Pavimentacion Distrito de Lanus
