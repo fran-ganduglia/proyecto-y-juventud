@@ -13,6 +13,11 @@ documents:
     date: 2026-08-29
     title: “Baches y asfalto sin solución”
     summary: Trabajo de Investigacion- Plan de Pavimentacion Distrito de Lanus
-pressLinks: []
+pressLinks:
+  - title: "Calles rotas en Lanús: Registran más de 7 mil baches y advierten sobre
+      un desfase en los fondos de la Tasa Vial"
+    kind: Nota web
+    outlet: "Data Conurbano "
+    url: https://dataconurbano.net/municipio/lanus/calles-rotas-en-lanus-registran-mas-de-7-mil-baches-y-advierten-sobre-un-desfase-en-los-fondos-de-la-tasa-vial/
 ---
 En ellos se expone de manera cruda la problemática que viven los vecinos diariamente con los baches de la zona.
