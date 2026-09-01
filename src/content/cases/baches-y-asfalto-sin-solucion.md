@@ -19,5 +19,10 @@ pressLinks:
     kind: Nota web
     outlet: "Data Conurbano "
     url: https://dataconurbano.net/municipio/lanus/calles-rotas-en-lanus-registran-mas-de-7-mil-baches-y-advierten-sobre-un-desfase-en-los-fondos-de-la-tasa-vial/
+  - url: https://www.instagram.com/p/DctVEL_RaSS/
+    kind: Instagram
+    outlet: SALA DE PRENSA OK
+    title: "El Municipio cobra $3.300 millones del 2% al combustible y la ejecucion
+      presupuestaria en obras de hormigon estructural, sigue en Cero "
 ---
 En ellos se expone de manera cruda la problemática que viven los vecinos diariamente con los baches de la zona.
