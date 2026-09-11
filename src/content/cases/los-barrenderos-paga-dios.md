@@ -7,7 +7,7 @@ summary: >-
 
   tiene convenio con el Municipio de Lanús
 location: lanus, buenos aires, argentina
-status: Presentado
+status: Recibido
 publishedAt: 2026-09-11
 updatedAt: 2026-09-11
 documents:
