@@ -143,14 +143,19 @@ for (const file of caseFiles.filter((entry) => entry.endsWith('.md'))) {
     if (!imagePath.test(data.image)) fail(`${path.relative(root, file)}.image: debe quedar en /uploads/ con un nombre seguro.`);
     await validateAsset(data.image, `${path.relative(root, file)}.image`, 'image');
   }
-  if (!Array.isArray(data.documents)) fail(`${path.relative(root, file)}: documents debe ser una lista.`);
-  for (const [index, document] of (data.documents ?? []).entries()) {
+  // Ambos campos son opcionales en el CMS y en el esquema de Astro. Cuando se
+  // omiten, Decap no los serializa en el frontmatter, por lo que deben
+  // validarse como listas vacías en vez de bloquear el deploy.
+  const documents = data.documents ?? [];
+  if (!Array.isArray(documents)) fail(`${path.relative(root, file)}: documents debe ser una lista.`);
+  for (const [index, document] of documents.entries()) {
     if (!isText(document?.title) || !isText(document?.summary) || !document?.date) fail(`${path.relative(root, file)}.documents[${index}]: faltan campos obligatorios.`);
     if (!documentPath.test(document?.file ?? '')) fail(`${path.relative(root, file)}.documents[${index}]: el PDF debe quedar en /uploads/ con un nombre seguro.`);
     await validateAsset(document?.file, `${path.relative(root, file)}.documents[${index}].file`, 'pdf');
   }
-  if (!Array.isArray(data.pressLinks)) fail(`${path.relative(root, file)}: pressLinks debe ser una lista.`);
-  for (const [index, link] of (data.pressLinks ?? []).entries()) {
+  const pressLinks = data.pressLinks ?? [];
+  if (!Array.isArray(pressLinks)) fail(`${path.relative(root, file)}: pressLinks debe ser una lista.`);
+  for (const [index, link] of pressLinks.entries()) {
     if (!isText(link?.title) || !isText(link?.outlet) || !['Nota web', 'Facebook', 'Instagram'].includes(link?.kind)) fail(`${path.relative(root, file)}.pressLinks[${index}]: enlace de prensa inválido.`);
     validHttps(link?.url, `${path.relative(root, file)}.pressLinks[${index}].url`);
   }
