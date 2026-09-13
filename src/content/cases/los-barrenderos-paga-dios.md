@@ -15,5 +15,11 @@ documents:
     summary: "Contexto socio económico de cooperativas de barrido en lanus "
     date: 2026-09-11
     file: /uploads/investigacion-n-3-cooperativistas-de-barrido.pdf
+pressLinks:
+  - kind: Instagram
+    outlet: "SALA DE PRENSA OK "
+    url: https://www.instagram.com/p/DdPYXUioOgT/
+    title: "SOCIEDAD: BARRENDEROS COOPERATIVISTAS , LOS ESCLAVOS DE JULIÁN ÁLVAREZ,
+      EL INTENDENTE DE LANÚS"
 ---
 Esta investigación reune el contexto socio económico que sufre el trabajador de Cooperativas de barrido en la Municipalidad de Lanus canalizando una propuesta y un planteo de solución
