@@ -21,5 +21,10 @@ pressLinks:
     url: https://www.instagram.com/p/DdPYXUioOgT/
     title: "SOCIEDAD: BARRENDEROS COOPERATIVISTAS , LOS ESCLAVOS DE JULIÁN ÁLVAREZ,
       EL INTENDENTE DE LANÚS"
+  - url: https://dataconurbano.net/municipio/lanus/brecha-salarial-en-lanus-un-estudio-revela-que-un-barrendero-de-cooperativa-cobra-hasta-diez-veces-menos-que-uno-de-empresa-privada/
+    kind: Nota web
+    outlet: "DATA CONURBANO .NET "
+    title: "Brecha salarial en Lanús: un estudio revela que un barrendero de
+      cooperativa cobra hasta diez veces menos que uno de empresa privada"
 ---
 Esta investigación reune el contexto socio económico que sufre el trabajador de Cooperativas de barrido en la Municipalidad de Lanus canalizando una propuesta y un planteo de solución
