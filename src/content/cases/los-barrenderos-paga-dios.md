@@ -26,5 +26,10 @@ pressLinks:
     outlet: "DATA CONURBANO .NET "
     title: "Brecha salarial en Lanús: un estudio revela que un barrendero de
       cooperativa cobra hasta diez veces menos que uno de empresa privada"
+  - url: https://www.instagram.com/p/DdP4CROEcea/
+    kind: Instagram
+    outlet: "DATA CONURBANO.NET "
+    title: "Brecha salarial: un estudio revela que un barrendero de cooperativa
+      cobra hasta diez veces menos que uno de empresa privada"
 ---
 Esta investigación reune el contexto socio económico que sufre el trabajador de Cooperativas de barrido en la Municipalidad de Lanus canalizando una propuesta y un planteo de solución
