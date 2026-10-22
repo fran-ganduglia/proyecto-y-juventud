@@ -2,6 +2,7 @@ import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { parse } from 'yaml';
+import { imagePath, documentPath, uploadPath } from '../src/lib/upload-paths.mjs';
 
 const root = process.cwd();
 const contentRoot = path.join(root, 'src/content');
@@ -15,9 +16,6 @@ const isSlug = (value) => typeof value === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)
 const isText = (value) => typeof value === 'string' && value.trim().length > 0;
 const startsWithBytes = (value, bytes) => bytes.every((byte, index) => value[index] === byte);
 const validDate = (value) => Boolean(value) && !Number.isNaN(new Date(value).getTime());
-const safeFilename = '[a-z0-9]+(?:-[a-z0-9]+)*';
-const imagePath = new RegExp(`^/uploads/(?:${safeFilename}\\.(?:jpg|jpeg|png|webp)|casos/${safeFilename}/imagenes/${safeFilename}\\.(?:jpg|jpeg|png|webp)|novedades/${safeFilename}/${safeFilename}\\.(?:jpg|jpeg|png|webp))$`);
-const documentPath = new RegExp(`^/uploads/(?:${safeFilename}\\.pdf|casos/${safeFilename}/documentos/${safeFilename}\\.pdf)$`);
 
 async function filesIn(directory) {
   let entries;
@@ -182,7 +180,7 @@ for (const file of newsFiles.filter((entry) => entry.endsWith('.md'))) {
 const uploadedFiles = await filesIn(uploadRoot);
 for (const file of uploadedFiles) {
   const relative = path.relative(uploadRoot, file).replaceAll(path.sep, '/');
-  if (!new RegExp(`^(?:${safeFilename}\\.(?:pdf|jpg|jpeg|png|webp)|casos/${safeFilename}/(?:documentos/${safeFilename}\\.pdf|imagenes/${safeFilename}\\.(?:jpg|jpeg|png|webp))|novedades/${safeFilename}/${safeFilename}\\.(?:jpg|jpeg|png|webp))$`).test(relative)) {
+  if (!uploadPath.test(`/uploads/${relative}`)) {
     fail(`public/uploads/${relative}: debe tener un nombre seguro.`);
   }
   await validateAsset(`/uploads/${relative}`, `public/uploads/${relative}`);

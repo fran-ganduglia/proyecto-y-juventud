@@ -44,7 +44,7 @@ collections:
         required: false
         allow_multiple: false
         choose_url: false
-        hint: "Opcional. Subí JPG, PNG o WebP de hasta 10 MB. El nombre se guarda en minúsculas, sin acentos ni espacios."
+        hint: "Opcional. Subí JPG, PNG o WebP de hasta 10 MB. Usá nombres descriptivos, sin acentos ni espacios."
         media_library:
           config:
             multiple: false
