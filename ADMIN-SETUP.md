@@ -22,8 +22,14 @@ La automatización necesita que el repositorio permita a GitHub Actions escribir
 
 Todo lo subido se hace público tras el deploy. No cargar DNI, teléfonos, domicilios, datos de denunciantes, información médica ni material sin autorización.
 
-Antes de guardar, subí todo directamente a `public/uploads/`. Usá nombres descriptivos y únicos, en minúsculas, sin espacios ni acentos; por ejemplo: `cementerio-lanus-foto-frente.jpg` o `cementerio-lanus-nota-concejo.pdf`. El selector estándar de Decap no admite organizar las cargas en subcarpetas.
+Antes de guardar, subí todo directamente a `public/uploads/`. Usá nombres descriptivos y únicos, preferentemente en minúsculas, sin espacios ni acentos; por ejemplo: `cementerio-lanus-foto-frente.jpg` o `cementerio-lanus-nota-concejo.pdf`. El selector estándar de Decap no admite organizar las cargas en subcarpetas.
 
 La validación previa al build rechaza archivos fuera de esa carpeta, mayores de 10 MB o que no sean PDF, JPG, PNG o WebP reales; también bloquea nombres inseguros, slugs/referencias inválidas, URLs que no sean HTTPS y HTML o scripts en el contenido. Los archivos ya existentes en la estructura anterior siguen siendo válidos. Un fallo conserva publicado el deploy anterior de Netlify.
 
 La versión de Decap está fijada en `3.7.0`. Antes de alterar la CSP de `public/_headers`, comprobá inicio de sesión Google, subida de archivos y guardado desde el panel de producción.
+
+## Si un caso guardado no aparece en la web
+
+El guardado del CMS confirma el contenido en GitHub, pero la web solo cambia cuando el deploy del sitio público termina correctamente. Revisá el último deploy de ese sitio en Netlify y su registro de build; un error conserva la versión anterior. El panel administrativo se despliega por separado.
+
+La validación de archivos comparte las mismas reglas con Astro y acepta los nombres ASCII seguros de Decap, incluidos guiones finales, guiones repetidos, mayúsculas, `_` y `~`. Se mantienen la restricción a `/uploads/`, los tipos de archivo admitidos, el control del contenido binario y el límite de 10 MB.

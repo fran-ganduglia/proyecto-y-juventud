@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { imagePath, documentPath } from './lib/upload-paths.mjs';
 
 const httpsUrl = z.url().refine((value) => new URL(value).protocol === 'https:', {
   message: 'La URL debe usar https.',
@@ -9,7 +10,7 @@ const httpsUrl = z.url().refine((value) => new URL(value).protocol === 'https:',
 const documents = z.array(z.object({
   title: z.string().min(1),
   summary: z.string().min(1),
-  file: z.string().regex(/^\/uploads\/(?:[a-z0-9]+(?:-[a-z0-9]+)*\.pdf|casos\/[a-z0-9]+(?:-[a-z0-9]+)*\/documentos\/[a-z0-9]+(?:-[a-z0-9]+)*\.pdf)$/, 'El PDF debe estar en /uploads/ con un nombre seguro.'),
+  file: z.string().regex(documentPath, 'El PDF debe estar en /uploads/ con un nombre seguro.'),
   date: z.coerce.date(),
 })).default([]);
 
@@ -37,7 +38,7 @@ const cases = defineCollection({
     status: z.enum(['Recibido', 'Presentado', 'En seguimiento', 'Respondido', 'Resuelto']),
     publishedAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
-    image: optionalImage(/^\/uploads\/(?:[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp)|casos\/[a-z0-9]+(?:-[a-z0-9]+)*\/imagenes\/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp))$/),
+    image: optionalImage(imagePath),
     documents,
     pressLinks,
   }),
@@ -50,7 +51,7 @@ const novedades = defineCollection({
     summary: z.string().min(1),
     date: z.coerce.date(),
     case: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-    image: optionalImage(/^\/uploads\/(?:[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp)|novedades\/[a-z0-9]+(?:-[a-z0-9]+)*\/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|jpeg|png|webp))$/),
+    image: optionalImage(imagePath),
   }),
 });
 
